@@ -1,0 +1,10 @@
+**/.idea/
+**/.bsp/
+target/
+**/project/
+**/target/
+.cache/
+out/
+*.iml
+.env
+
