@@ -21,28 +21,27 @@ object ExampleService {
       minLatency: Int,
       maxLatency: Int,
       bananaPercentage: Int
-  ): ExampleService[F] =
-    new ExampleService[F] {
-      private val metricsProvider = summon[Meter[F]]
-      private val remoteApiFruitCount = metricsProvider
-        .counter("RemoteApi.fruit.count")
-        .withDescription("Number of fruits returned by the API.")
-        .create
+  ): F[ExampleService[F]] = {
+    val metricsProvider = summon[Meter[F]]
+    metricsProvider
+      .counter("RemoteApi.fruit.count")
+      .withDescription("Number of fruits returned by the API.")
+      .create
+      .map { remoteApiFruitCount =>
+        new ExampleService[F] {
+          private val spanBuilder = Tracer[F].spanBuilder("remoteAPI.com/fruit").build
 
-      private val spanBuilder = Tracer[F].spanBuilder("remoteAPI.com/fruit").build
-
-      override def getDataFromSomeAPI: F[ApiData] = for {
-        latency <- Random[F].betweenInt(minLatency, maxLatency)
-        isBanana <- Random[F].betweenInt(0, 100).map(_ <= bananaPercentage)
-        duration = FiniteDuration(latency, TimeUnit.MILLISECONDS)
-        fruit <- spanBuilder.surround(
-          Async[F].sleep(duration) *> Async[F].pure(
-            if isBanana then "banana" else "apple"
-          )
-        )
-        _ <- remoteApiFruitCount.flatMap(
-          _.inc(Attribute(AttributeKey.string("fruit"), fruit))
-        )
-      } yield ApiData(s"Api returned a $fruit !")
-    }
+          override def getDataFromSomeAPI: F[ApiData] = for {
+            latency <- Random[F].betweenInt(minLatency, maxLatency)
+            isBanana <- Random[F].betweenInt(0, 100).map(_ <= bananaPercentage)
+            duration = FiniteDuration(latency, TimeUnit.MILLISECONDS)
+            fruit <- spanBuilder.surround(
+              Async[F].sleep(duration) *>
+                Async[F].pure(if isBanana then "banana" else "apple")
+            )
+            _ <- remoteApiFruitCount.inc(Attribute(AttributeKey.string("fruit"), fruit))
+          } yield ApiData(s"Api returned a $fruit !")
+        }
+      }
+  }
 }

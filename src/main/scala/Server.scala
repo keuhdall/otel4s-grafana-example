@@ -18,8 +18,8 @@ object Server extends IOApp {
       serviceName = "otel4s-grafana-example"
       given Meter[F] <- Resource.eval(otel.meterProvider.get(serviceName))
       given Tracer[F] <- Resource.eval(otel.tracerProvider.get(serviceName))
-      exampleService = ExampleService[F](50, 500, 20)
-      route = ExampleRoute[F](exampleService)
+      exampleService <- Resource.eval(ExampleService[F](50, 500, 20))
+      route <- Resource.eval(ExampleRoute[F](exampleService))
       server <- EmberServerBuilder
         .default[F]
         .withHost(ipv4"0.0.0.0")
