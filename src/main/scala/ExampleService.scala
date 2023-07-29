@@ -9,7 +9,7 @@ import org.typelevel.otel4s.trace.Tracer
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.FiniteDuration
 
-given Configuration = Configuration.default.withSnakeCaseMemberNames
+given Configuration = Configuration.default
 case class ApiData(result: String) derives ConfiguredCodec
 
 trait ExampleService[F[_]] {
