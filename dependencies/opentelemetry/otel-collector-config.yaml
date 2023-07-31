@@ -14,10 +14,15 @@ exporters:
     endpoint: 0.0.0.0:8889
     send_timestamps: true
 
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+
+  logging:
+    verbosity: detailed
+
 processors:
   batch:
     timeout: 10s
-
 
 service:
   pipelines:
@@ -29,3 +34,7 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [loki, logging]

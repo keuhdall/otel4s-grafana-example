@@ -7,6 +7,7 @@ services:
     restart: on-failure
     ports:
       - "8080:8080"
+      - "5000:5000"
     networks:
       - static-network
 
@@ -44,6 +45,23 @@ services:
       - "./dependencies/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
     ports:
       - "9090:9090"
+    networks:
+      - static-network
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - static-network
+
+  promtail:
+    image: grafana/promtail:2.8.0
+    volumes:
+      - ./dependencies/promtail/promtail.yaml:/etc/promtail/config.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yaml
     networks:
       - static-network
 

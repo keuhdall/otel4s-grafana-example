@@ -1,15 +1,18 @@
-import cats.effect.std.Random
 import cats.effect.*
+import cats.effect.std.Random
 import com.comcast.ip4s.{ipv4, port}
 import io.opentelemetry.api.GlobalOpenTelemetry
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
+import org.typelevel.log4cats.LoggerFactory
+import org.typelevel.log4cats.slf4j.{Slf4jFactory, loggerFactoryforSync}
 import org.typelevel.otel4s.java.OtelJava
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.trace.Tracer
+import org.typelevel.vault.Vault
 
 object Server extends IOApp {
-  private def app[F[_]: Async: LiftIO]: Resource[F, Server] =
+  private def app[F[_]: Async: LiftIO: LoggerFactory]: Resource[F, Server] =
     for {
       given Random[F] <- Resource.eval(Random.scalaUtilRandom[F])
       otel <- Resource
@@ -28,6 +31,8 @@ object Server extends IOApp {
         .build
     } yield server
 
-  override def run(args: List[String]): IO[ExitCode] =
+  override def run(args: List[String]): IO[ExitCode] = {
+    given LoggerFactory[IO] = Slf4jFactory[IO]
     app[IO].useForever.as(ExitCode.Success)
+  }
 }

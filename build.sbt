@@ -5,8 +5,9 @@ ThisBuild / scalaVersion := "3.3.0"
 lazy val root = (project in file("."))
   .settings(
     name := "otel4s-grafana-example",
-    dockerExposedPorts ++= Seq(8080),
-    libraryDependencies ++= commonDeps ++ circeDeps ++ http4sDeps ++ otelDeps,
+    dockerBaseImage := "openjdk:11",
+    dockerExposedPorts ++= Seq(8080, 5000),
+    libraryDependencies ++= commonDeps ++ circeDeps ++ http4sDeps ++ logDeps ++ otelDeps,
     scalacOptions ++= Seq(
       "-Wunused:all",
       "-Wvalue-discard",
@@ -17,7 +18,8 @@ lazy val root = (project in file("."))
     ),
     Universal / javaOptions ++= Seq(
       "-Dotel.java.global-autoconfigure.enabled=true",
-      s"-Dotel.service.name=${name.value}"
+      s"-Dotel.service.name=${name.value}",
+      "-jvm-debug 5000"
     ),
     scalafmtOnCompile := true
   )
@@ -28,6 +30,7 @@ lazy val root = (project in file("."))
 lazy val commonDeps = Seq(deps.cats, deps.catsEffect)
 lazy val circeDeps = Seq(deps.circe, deps.circeGeneric)
 lazy val http4sDeps = Seq(deps.http4sServer, deps.http4sDsl, deps.http4sCirce)
+lazy val logDeps = Seq(deps.logback, deps.otelLogbackAppender, deps.log4cats)
 lazy val otelDeps = Seq(deps.otel4s, deps.otelExporter, deps.otelSdk)
 
 lazy val deps = new {
@@ -38,8 +41,8 @@ lazy val deps = new {
   val otel4sVersion = "0.2.1"
   val otelVersion = "1.27.0"
   val otelSdkVersion = "1.27.0-alpha"
-  val slf4jVersion = "2.0.5"
   val log4catsVersion = "2.5.0"
+  val logbackVersion = "1.4.8"
 
   val cats = "org.typelevel" %% "cats-core" % catsVersion
   val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectVersion
@@ -51,9 +54,14 @@ lazy val deps = new {
   val http4sDsl = "org.http4s" %% "http4s-dsl" % http4sVersion
   val http4sCirce = "org.http4s" %% "http4s-circe" % http4sVersion
 
+  val log4cats = "org.typelevel" %% "log4cats-slf4j" % log4catsVersion
+  val logback = "ch.qos.logback" % "logback-classic" % logbackVersion
+
   val otel4s = "org.typelevel" %% "otel4s-java" % otel4sVersion
   val otelExporter =
     "io.opentelemetry" % "opentelemetry-exporter-otlp" % otelVersion % Runtime
   val otelSdk =
     "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % otelSdkVersion % Runtime
+  val otelLogbackAppender =
+    "io.opentelemetry.instrumentation" % "opentelemetry-logback-appender-1.0" % otelSdkVersion % Runtime
 }
