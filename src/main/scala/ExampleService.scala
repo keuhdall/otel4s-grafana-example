@@ -2,7 +2,7 @@ import cats.effect.Async
 import cats.effect.std.Random
 import cats.implicits.{catsSyntaxApply, toFlatMapOps, toFunctorOps}
 import io.circe.derivation.{Configuration, ConfiguredCodec}
-import org.typelevel.otel4s.{Attribute, AttributeKey}
+import org.typelevel.otel4s.Attribute
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.trace.Tracer
 
@@ -39,7 +39,7 @@ object ExampleService {
               Async[F].sleep(duration) *>
                 Async[F].pure(if isBanana then "banana" else "apple")
             )
-            _ <- remoteApiFruitCount.inc(Attribute(AttributeKey.string("fruit"), fruit))
+            _ <- remoteApiFruitCount.inc(Attribute("fruit", fruit))
           } yield ApiData(s"Api returned a $fruit !")
         }
       }
