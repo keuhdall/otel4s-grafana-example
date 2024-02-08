@@ -14,6 +14,9 @@ curl -v localhost:8080/example
 In Grafana (http://localhost:3000/explore), login using user `admin` and password `admin`.
 Then in the Explore page, you can select `Prometheus` to view metrics or `Jaeger` to view traces
 
+If you want to run the application in sbt, you need to set env var `export OTEL_EXPORTER_OTLP_ENDPOINT="http://localhost:4317"`,
+before executing `sbt run`.
+
 ### 1. The code
 
 Before diving into the configuration let's review the code in order to understand what we are monitoring: we have a simple http4s server with a route on `/example`. This route then calls `ExampleService` which emulates a call to a remote API, supposed to return apples or bananas.

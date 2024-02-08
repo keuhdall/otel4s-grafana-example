@@ -15,10 +15,12 @@ lazy val root = (project in file("."))
       "-feature",
       "-deprecation"
     ),
-    Universal / javaOptions ++= Seq(
+    Compile / javaOptions ++= Seq(
       "-Dotel.java.global-autoconfigure.enabled=true",
       s"-Dotel.service.name=${name.value}"
     ),
+    Universal / javaOptions ++= (Compile / javaOptions).value,
+    fork := true,
     scalafmtOnCompile := true
   )
   .enablePlugins(JavaServerAppPackaging)
