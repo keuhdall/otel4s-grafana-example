@@ -32,7 +32,6 @@ services:
       - METRICS_STORAGE_TYPE=prometheus
       - PROMETHEUS_SERVER_URL=http://prometheus:9090
     ports:
-      - "14250:14250"
       - "16685:16685" # GRPC
       - "16686:16686" # UI
     networks:
@@ -50,6 +49,8 @@ services:
   grafana:
     image: grafana/grafana-oss
     restart: unless-stopped
+    volumes:
+      - "./dependencies/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml"
     ports:
       - "3000:3000"
     networks:

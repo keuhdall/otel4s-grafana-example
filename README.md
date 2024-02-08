@@ -1,5 +1,19 @@
 # Simple otel4s with grafana example
 
+```
+# Build the application & locally publish the docker image
+sbt "Docker / publishLocal"
+
+# Spin up the docker containers
+docker-compose up -d
+
+# Test it out!
+curl -v localhost:8080/example
+```
+
+In Grafana (http://localhost:3000/explore), login using user `admin` and password `admin`.
+Then in the Explore page, you can select `Prometheus` to view metrics or `Jaeger` to view traces
+
 ### 1. The code
 
 Before diving into the configuration let's review the code in order to understand what we are monitoring: we have a simple http4s server with a route on `/example`. This route then calls `ExampleService` which emulates a call to a remote API, supposed to return apples or bananas.
