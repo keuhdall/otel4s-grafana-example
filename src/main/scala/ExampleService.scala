@@ -1,6 +1,6 @@
 import cats.effect.Async
 import cats.effect.std.Random
-import cats.implicits.{catsSyntaxApply, toFlatMapOps, toFunctorOps}
+import cats.implicits.*
 import io.circe.derivation.{Configuration, ConfiguredCodec}
 import org.typelevel.otel4s.Attribute
 import org.typelevel.otel4s.metrics.Meter

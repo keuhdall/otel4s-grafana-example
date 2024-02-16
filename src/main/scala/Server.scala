@@ -4,12 +4,16 @@ import com.comcast.ip4s.{ipv4, port}
 import io.opentelemetry.api.GlobalOpenTelemetry
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
+import org.typelevel.log4cats.LoggerFactory
 import org.typelevel.otel4s.java.OtelJava
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.trace.Tracer
 
+import org.typelevel.log4cats.slf4j.Slf4jFactory
+
 object Server extends IOApp {
   private def app[F[_]: Async: LiftIO]: Resource[F, Server] =
+    given LoggerFactory[F] = Slf4jFactory.create[F]
     for {
       given Random[F] <- Resource.eval(Random.scalaUtilRandom[F])
       otel <- Resource
