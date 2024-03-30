@@ -37,7 +37,7 @@ lazy val deps = new {
   val catsEffectVersion = "3.5.4"
   val circeVersion = "0.14.6"
   val http4sVersion = "1.0.0-M41"
-  val otel4sVersion = "0.4.0"
+  val otel4sVersion = "0.5.0"
   val otelVersion = "1.34.1"
   val slf4jVersion = "2.0.5"
   val log4catsVersion = "2.5.0"
@@ -52,7 +52,7 @@ lazy val deps = new {
   val http4sDsl = "org.http4s" %% "http4s-dsl" % http4sVersion
   val http4sCirce = "org.http4s" %% "http4s-circe" % http4sVersion
 
-  val otel4s = "org.typelevel" %% "otel4s-java" % otel4sVersion
+  val otel4s = "org.typelevel" %% "otel4s-oteljava" % otel4sVersion
   val otelExporter =
     "io.opentelemetry" % "opentelemetry-exporter-otlp" % otelVersion % Runtime
   val otelSdk =
