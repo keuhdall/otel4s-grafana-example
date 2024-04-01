@@ -24,7 +24,7 @@ object ExampleService {
   ): F[ExampleService[F]] = {
     val metricsProvider = summon[Meter[F]]
     metricsProvider
-      .counter("RemoteApi.fruit.count")
+      .counter[Long]("RemoteApi.fruit.count")
       .withDescription("Number of fruits returned by the API.")
       .create
       .map { remoteApiFruitCount =>

@@ -11,7 +11,7 @@ object ExampleRoute {
     val metricsProvider = summon[Meter[F]]
 
     metricsProvider
-      .counter("ExampleRoute.count")
+      .counter[Long]("ExampleRoute.count")
       .withDescription("number of times the route /example is called")
       .create
       .map { endpointCounter =>
