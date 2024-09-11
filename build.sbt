@@ -6,6 +6,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "otel4s-grafana-example",
     dockerExposedPorts ++= Seq(8080),
+    dockerBaseImage := "openjdk:11",
     libraryDependencies ++= commonDeps ++ circeDeps ++ http4sDeps ++ logDeps ++ otelDeps,
     scalacOptions ++= Seq(
       "-Wunused:all",
