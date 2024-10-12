@@ -1,6 +1,6 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "3.5.0"
+ThisBuild / scalaVersion := "3.5.1"
 
 lazy val root = (project in file("."))
   .settings(
@@ -39,11 +39,11 @@ lazy val deps = new {
   val catsEffectVersion = "3.5.4"
   val circeVersion = "0.14.10"
   val http4sVersion = "1.0.0-M42"
-  val otel4sVersion = "0.9.0"
+  val otel4sVersion = "0.10.0"
   val otelVersion = "1.42.1"
   val slf4jVersion = "2.0.5"
   val log4catsVersion = "2.7.0"
-  val logbackVersion = "1.5.8"
+  val logbackVersion = "1.5.10"
 
   val cats = "org.typelevel" %% "cats-core" % catsVersion
   val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectVersion
