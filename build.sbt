@@ -36,7 +36,7 @@ lazy val otelDeps = Seq(deps.otel4s, deps.otelExporter, deps.otelSdk)
 
 lazy val deps = new {
   val catsVersion = "2.12.0"
-  val catsEffectVersion = "3.5.4"
+  val catsEffectVersion = "3.5.5"
   val circeVersion = "0.14.10"
   val http4sVersion = "1.0.0-M42"
   val otel4sVersion = "0.10.0"
