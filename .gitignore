@@ -7,4 +7,6 @@ target/
 out/
 *.iml
 .env
-
+.bloop
+.metals
+.vscode
