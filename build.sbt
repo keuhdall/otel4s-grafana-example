@@ -42,7 +42,7 @@ lazy val deps = new {
   val otel4sVersion = "0.11.1"
   val otelVersion = "1.44.1"
   val slf4jVersion = "2.0.5"
-  val log4catsVersion = "2.7.0"
+  val log4catsVersion = "2.7.1"
   val logbackVersion = "1.5.12"
 
   val cats = "org.typelevel" %% "cats-core" % catsVersion
